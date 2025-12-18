@@ -21,7 +21,7 @@ module.exports = {
                 discordId: target.id,
             };
 
-            let stats = await UserStats.findOne();
+            let stats = await UserStats.findOne(query);
 
             if (!stats) {
                 stats = new UserStats({

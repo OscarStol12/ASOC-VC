@@ -5,6 +5,7 @@ global.File = require('file').File; // needed to ensure noblox.js will work with
 require('dotenv/config');
 const { Client, IntentsBitField } = require('discord.js');
 const { CommandHandler } = require('djs-commander');
+const noblox = require('noblox.js');
 const mongoose = require('mongoose');
 const path = require('path');
 
@@ -24,6 +25,14 @@ new CommandHandler({
 });
 
 (async () => {
+    try {
+        await noblox.setCookie(process.env.ROBLOSECURITY);
+        console.log("Logged into the ROBLOX account successfully!");
+    } catch (e) {
+        console.log(`Failed to log into the ROBLOX account: ${e}`);
+        return;
+    }
+
     try {
         await mongoose.connect(process.env.MONGODB_URI);
         console.log("Logged into the database successfully!");

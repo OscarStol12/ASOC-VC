@@ -34,7 +34,7 @@ const UserStatsSchema = new Schema({
         default: "None",
     },
     currentWarno: {
-        type: Number,
+        type: String,
         default: "None",
     },
 

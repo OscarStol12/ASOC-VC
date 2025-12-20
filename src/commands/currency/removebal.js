@@ -67,11 +67,7 @@ module.exports = {
         
                     let embed = new EmbedBuilder()
                     .setTitle(`✅ Success`)
-                    .setDescription(
-                        `Successfully removed ${amount} Promotion Points from <@${target.id}>.
-                        Points: <:promotion_point:959090715923726346>${stats.promoPoints + amount} -> <:promotion_point:959090715923726346>${stats.promoPoints}
-                        Reason: ${reason}`
-                    )
+                    .setDescription(`Successfully removed ${amount} Promotion Points from <@${target.id}>.\nPoints: <:promotion_point:959090715923726346>${stats.promoPoints + amount} -> <:promotion_point:959090715923726346>${stats.promoPoints}\nReason: ${reason}`)
                     .setColor(Colors.Green)
                     .setTimestamp();
         

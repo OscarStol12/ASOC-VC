@@ -42,10 +42,7 @@ module.exports = {
 
             let embed = new EmbedBuilder()
             .setTitle(`<:promotion_point:959090715923726346> Promotion Points Info`)
-            .setDescription(
-                `User: <@${target.id}>
-                Points: ${stats.promoPoints}`
-            )
+            .setDescription(`User: <@${target.id}>\nPoints: ${stats.promoPoints}`)
             .setThumbnail(target.displayAvatarURL({ size: 1024 }))
             .setColor(Colors.Yellow)
             .setTimestamp();

@@ -59,7 +59,7 @@ module.exports = {
 
             verificationData.robloxId = data.roblox_id;
             verificationData.robloxName = await noblox.getUsernameFromId(data.roblox_id);
-            verificationData.save();
+            await verificationData.save();
 
             let embed = new EmbedBuilder()
             .setTitle('✅ Linked')

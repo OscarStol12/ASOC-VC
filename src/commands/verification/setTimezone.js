@@ -71,7 +71,7 @@ module.exports = {
             }
 
             verificationData.UTCOffset = totalOffset;
-            verificationData.save();
+            await verificationData.save();
 
             let embed = new EmbedBuilder()
             .setTitle(`✅ Timezone Updated`)

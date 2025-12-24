@@ -32,7 +32,7 @@ module.exports = {
 
                 verificationData.robloxName = "None";
                 verificationData.robloxId = "None";
-                verificationData.save();
+                await verificationData.save();
 
                 let embed = new EmbedBuilder()
                 .setTitle('✅ Unlinked')

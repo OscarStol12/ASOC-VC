@@ -17,8 +17,8 @@ module.exports = {
                 discordId: interaction.user.id,
             }
 
-            const verificationData = await verificationDB.findOne(query);
-            if (verificationData) {
+            let verificationData = await verificationDB.findOne(query);
+            if (verificationData && (verificationData.robloxName !== "None" && verificationData.robloxId !== "None")) {
                 let embed = new EmbedBuilder()
                 .setTitle('✅ Already Linked')
                 .setDescription(`Your account is already linked to the ROBLOX account ${verificationData.robloxName} with ID ${verificationData.robloxId}. If you want to link to a different account, run /unlink and then re-verify with RoWifi.`)
@@ -48,17 +48,22 @@ module.exports = {
             }
 
             const data = await response.json();
-            const newData = new verificationDB({
-                discordId: interaction.user.id,
-                robloxId: data.roblox_id,
-                robloxName: await noblox.getUsernameFromId(data.roblox_id),
-            });
+            if (!verificationData) {
+                verificationData = new verificationDB({
+                    discordId: interaction.user.id,
+                    robloxId: "None",
+                    robloxName: "None",
+                    UTCOffset: 0,
+                })
+            }
 
-            await newData.save();
+            verificationData.robloxId = data.roblox_id;
+            verificationData.robloxName = await noblox.getUsernameFromId(data.roblox_id);
+            verificationData.save();
 
             let embed = new EmbedBuilder()
             .setTitle('✅ Linked')
-            .setDescription(`Your discord account has successfully been linked to the ROBLOX account ${newData.robloxName} with ID ${newData.robloxId}.`)
+            .setDescription(`Your discord account has successfully been linked to the ROBLOX account ${verificationData.robloxName} with ID ${verificationData.robloxId}.`)
             .setColor(Colors.Green)
             .setTimestamp();
 

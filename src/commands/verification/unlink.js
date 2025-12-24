@@ -14,11 +14,29 @@ module.exports = {
                 discordId: interaction.user.id,
             }
 
-            const verificationData = await verificationDB.findOneAndDelete(query);
+            const verificationData = await verificationDB.findOne(query);
             if (verificationData) {
+                let oldName = verificationData.robloxName;
+                let oldId = verificationData.robloxId;
+
+                if (oldName === "None" || oldId === "None") {
+                    let embed = new EmbedBuilder()
+                    .setTitle('⚠️ No Account Linked')
+                    .setDescription(`Your discord account is not linked to a ROBLOX account in the database. No changes were made.`)
+                    .setColor(Colors.Yellow)
+                    .setTimestamp();
+
+                    await interaction.reply({embeds: [embed], flags: MessageFlags.Ephemeral});
+                    return;
+                }
+
+                verificationData.robloxName = "None";
+                verificationData.robloxId = "None";
+                verificationData.save();
+
                 let embed = new EmbedBuilder()
                 .setTitle('✅ Unlinked')
-                .setDescription(`Your discord account has been unlinked from the ROBLOX account ${verificationData.robloxName} with ID ${verificationData.robloxId}.`)
+                .setDescription(`Your discord account has been unlinked from the ROBLOX account ${oldName} with ID ${oldId}.`)
                 .setColor(Colors.Green)
                 .setTimestamp();
 

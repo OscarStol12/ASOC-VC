@@ -16,6 +16,10 @@ const UserVerificationSchema = new Schema({
         type: String,
         default: "",
     },
+    UTCOffset: {
+        type: Number,
+        default: 0,
+    }
 });
 
 module.exports = model('UserVerification', UserVerificationSchema);

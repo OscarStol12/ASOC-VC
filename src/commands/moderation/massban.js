@@ -50,9 +50,9 @@ module.exports = {
             }
 
             if (currentBanned.find(user => user.id === rawUserData)) {
-                users[users.length] = rawUserData;
-            } else {
                 skipped++;
+            } else {
+                users[users.length] = rawUserData;
             }
 
             let result = await interaction.guild.members.bulkBan(users, {reason: reason});

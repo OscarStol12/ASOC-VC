@@ -1,10 +1,12 @@
+"use strict";
+
 const { EmbedBuilder, Colors, MessageFlags } = require('discord.js');
 const config = require(`${PROJECT_ROOT}/config.json`);
 
 module.exports = async ({interaction, commandObj}) => {
     if (commandObj && commandObj.validations) {
         if (commandObj.validations.hasHostingRights) {
-            let userRoles = interaction.user.roles;
+            let userRoles = interaction.member.roles;
             let canUseCmd = (
                 userRoles.cache.has(config.clearances['Operation-Leading']) ||
                 userRoles.cache.has(config.units.HQASOC) ||
@@ -22,6 +24,7 @@ module.exports = async ({interaction, commandObj}) => {
                 .setTimestamp();
 
                 await interaction.reply({embeds: [embed], flags: MessageFlags.Ephemeral});
+                return true;
             }
         }
     }

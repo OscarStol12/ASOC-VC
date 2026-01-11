@@ -44,6 +44,8 @@ module.exports = {
                     skipped++;
                 } else if (!users.includes(content)) {
                     users[i - skipped] = content;
+                } else {
+                    skipped++;
                 }
 
                 rawUserData = rawUserData.substring(index + 1);
@@ -53,6 +55,8 @@ module.exports = {
                 skipped++;
             } else if (!users.includes(rawUserData)) {
                 users[users.length] = rawUserData;
+            } else {
+                skipped++;
             }
 
             let result = await interaction.guild.members.bulkBan(users, {reason: reason});
@@ -74,7 +78,7 @@ module.exports = {
             } else {
                 embed = new EmbedBuilder()
                 .setTitle(`✅ Success`)
-                .setDescription(`${result.bannedUsers.length} users have been successfully banned from the server with reason: ${reason}. ${(skipped > 0)?`\n${skipped} users were skipped due to already being banned.`:``}`)
+                .setDescription(`${result.bannedUsers.length} users have been successfully banned from the server with reason: ${reason}. ${(skipped > 0)?`\n${skipped} users were skipped due to already being banned, or being included mutliple times in the ban list.`:``}`)
                 .setColor(Colors.Green)
                 .setTimestamp();
             }

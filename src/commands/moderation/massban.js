@@ -42,7 +42,7 @@ module.exports = {
                 // NOTE: Discord.js will error if an already banned user is provided in the list, skip users who are already banned
                 if (currentBanned.find(ban => ban.user.id === content)) {
                     skipped++;
-                } else {
+                } else if (!users.includes(content)) {
                     users[i - skipped] = content;
                 }
 

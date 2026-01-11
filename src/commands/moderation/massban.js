@@ -51,7 +51,7 @@ module.exports = {
 
             if (currentBanned.find(ban => ban.user.id === rawUserData)) {
                 skipped++;
-            } else {
+            } else if (!users.includes(rawUserData)) {
                 users[users.length] = rawUserData;
             }
 

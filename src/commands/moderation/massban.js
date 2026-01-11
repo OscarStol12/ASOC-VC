@@ -32,18 +32,33 @@ module.exports = {
             const users = []
             const iterations = rawUserData.match(/,/g).length;
 
+            const currentBanned = await interaction.guild.bans.fetch();
+            let skipped = 0;
+
             for (let i = 0; i < iterations; i++) {
                 let index = (rawUserData.indexOf(',' !== -1)) ? rawUserData.indexOf(',') : rawUserData.length;
                 let content = rawUserData.substring(0, index);
 
-                users[i] = content;
+                // NOTE: Discord.js will error if an already banned user is provided in the list, skip users who are already banned
+                if (currentBanned.find(user => user.id === content)) {
+                    skipped++;
+                } else {
+                    users[i - skipped] = content;
+                }
+
                 rawUserData = rawUserData.substring(index + 1);
             }
 
-            users[users.length] = rawUserData;
+            if (currentBanned.find(user => user.id === rawUserData)) {
+                users[users.length] = rawUserData;
+            } else {
+                skipped++;
+            }
+
             let result = await interaction.guild.members.bulkBan(users, {reason: reason});
             
             let embed;
+            console.log(result.failedUsers.length);
             if (result.bannedUsers.length === 0) {
                 embed = new EmbedBuilder()
                 .setTitle(`❌ Bans Failed`)
@@ -59,7 +74,7 @@ module.exports = {
             } else {
                 embed = new EmbedBuilder()
                 .setTitle(`✅ Success`)
-                .setDescription(`${result.bannedUsers.length} users have been successfully banned from the server with reason: ${reason}.`)
+                .setDescription(`${result.bannedUsers.length} users have been successfully banned from the server with reason: ${reason}. ${(skipped > 0)?`\n${skipped} users were skipped due to already being banned.`:``}`)
                 .setColor(Colors.Green)
                 .setTimestamp();
             }
@@ -75,4 +90,8 @@ module.exports = {
             await interaction.editReply({embeds: [embed], flags: MessageFlags.Ephemeral});
         }
     },
+
+    validations: {
+        isModerator: true,
+    }
 }

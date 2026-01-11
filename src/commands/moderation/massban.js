@@ -59,6 +59,14 @@ module.exports = {
                 skipped++;
             }
 
+            let intermission = new EmbedBuilder()
+            .setTitle(`⏰ Massban In Progress`)
+            .setDescription(`The bot is now attempting to massban ${users.length} users in total.${(skipped > 0)?`\n${skipped} users were skipped due to either already being banned or being mentioned multiple times in the banlist.`:``}\nThis command may take a while to complete, please be patient.`)
+            .setColor(Colors.Yellow)
+            .setTimestamp();
+
+            await interaction.editReply({embeds: [intermission]});
+
             let result = await interaction.guild.members.bulkBan(users, {reason: reason});
             
             let embed;

@@ -40,7 +40,7 @@ module.exports = {
                 let content = rawUserData.substring(0, index);
 
                 // NOTE: Discord.js will error if an already banned user is provided in the list, skip users who are already banned
-                if (currentBanned.find(user => user.id === content)) {
+                if (currentBanned.find(ban => ban.user.id === content)) {
                     skipped++;
                 } else {
                     users[i - skipped] = content;
@@ -49,7 +49,7 @@ module.exports = {
                 rawUserData = rawUserData.substring(index + 1);
             }
 
-            if (currentBanned.find(user => user.id === rawUserData)) {
+            if (currentBanned.find(ban => ban.user.id === rawUserData)) {
                 skipped++;
             } else {
                 users[users.length] = rawUserData;

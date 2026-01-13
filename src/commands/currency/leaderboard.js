@@ -96,6 +96,8 @@ module.exports = {
                         currentPage = 1;
                         let embed = await getDisplayEmbed(currentPage);
                         await interaction.editReply({embeds: [embed]});
+
+                        if (i) await (await i.reply({content: `temp`, flags: MessageFlags.Ephemeral})).delete();
                         break;
                     }
 
@@ -103,12 +105,16 @@ module.exports = {
                         currentPage = Math.max(currentPage - 1, 1);
                         let embed = await getDisplayEmbed(currentPage);
                         await interaction.editReply({embeds: [embed]});
+
+                        if (i) await (await i.reply({content: `temp`, flags: MessageFlags.Ephemeral})).delete();
                         break;
                     }
 
                     case 'refresh': {
                         let embed = await getDisplayEmbed(currentPage);
                         await interaction.editReply({embeds: [embed]});
+
+                        if (i) await (await i.reply({content: `temp`, flags: MessageFlags.Ephemeral})).delete();
                         break;
                     }
 
@@ -116,6 +122,8 @@ module.exports = {
                         currentPage = Math.min(currentPage + 1, totalPages);
                         let embed = await getDisplayEmbed(currentPage);
                         await interaction.editReply({embeds: [embed]});
+
+                        if (i) await (await i.reply({content: `temp`, flags: MessageFlags.Ephemeral})).delete();
                         break;
                     }
 
@@ -123,6 +131,8 @@ module.exports = {
                         currentPage = totalPages;
                         let embed = await getDisplayEmbed(currentPage);
                         await interaction.editReply({embeds: [embed]});
+
+                        if (i) await (await i.reply({content: `temp`, flags: MessageFlags.Ephemeral})).delete();
                         break;
                     }
                 }

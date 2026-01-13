@@ -70,7 +70,6 @@ module.exports = {
             let result = await interaction.guild.members.bulkBan(users, {reason: reason});
             
             let embed;
-            console.log(result.failedUsers.length);
             if (result.bannedUsers.length === 0) {
                 embed = new EmbedBuilder()
                 .setTitle(`❌ Bans Failed`)

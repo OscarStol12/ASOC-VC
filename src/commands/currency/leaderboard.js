@@ -8,7 +8,7 @@ const UserStats = require(`${PROJECT_ROOT}/data/UserStats`);
  * @returns {EmbedBuilder} 
  */
 async function getDisplayEmbed(n) {
-    let users = await UserStats.find({}).sort({ promoPoints: -1 });
+    let users = await UserStats.find({promoPoints: {$gt: 0}}).sort({ promoPoints: -1 });
 
     let totalPages = Math.ceil(users.length / 10);
     if (n === "last") n = totalPages;
@@ -51,7 +51,7 @@ module.exports = {
     run: async ({ interaction }) => {
         try {
             let initPage = interaction.options.getInteger('page') ?? 1;
-            let users = await UserStats.find({}).sort({ promoPoints: -1 });
+            let users = await UserStats.find({promoPoints: {$gt: 0}}).sort({ promoPoints: -1 });
 
             let totalPages = Math.ceil(users.length / 10);
 

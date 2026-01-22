@@ -73,7 +73,4 @@ module.exports = {
             await interaction.reply({embeds: [embed], flags: MessageFlags.Ephemeral});
         }
     },
-
-    // testing command only
-    deleted: process.env.THIS_ENVIRONMENT === "PRODUCTION",
 }

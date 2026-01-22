@@ -8,6 +8,7 @@ const mongoose = require('mongoose');
 const path = require('path');
 
 global.PROJECT_ROOT = path.join(__dirname, '..');
+global.BEGIN_UPTIME = Date.now();
 
 const bot = new Client({ 
     intents: [

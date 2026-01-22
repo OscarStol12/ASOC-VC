@@ -211,7 +211,7 @@ module.exports = {
             // Create new roles
             const sortedRoles = snapshot.data.roles.sort((a, b) => b.position - a.position);
             const roleMap = new Map();
-            roleMap.set(snapshot.everyone, guild.roles.everyone.id);
+            roleMap.set(snapshot.data.everyone, guild.roles.everyone.id);
             for (const roleData of sortedRoles) {
                 await updateWithCurrentStep(`Creating role ${roleData.name}`);
                 try {

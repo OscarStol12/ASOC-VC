@@ -1,9 +1,7 @@
 "use strict";
 
-global.File = require('file').File; // needed to ensure noblox.js will work without complaints
-
 require('dotenv/config');
-const { Client, IntentsBitField } = require('discord.js');
+const { Client, IntentsBitField, Partials } = require('discord.js');
 const { CommandHandler } = require('djs-commander');
 const noblox = require('noblox.js');
 const mongoose = require('mongoose');
@@ -11,11 +9,18 @@ const path = require('path');
 
 global.PROJECT_ROOT = path.join(__dirname, '..');
 
-const bot = new Client({ intents: [
-    IntentsBitField.Flags.Guilds,
-    IntentsBitField.Flags.GuildMessages,
-    IntentsBitField.Flags.MessageContent,
-]});
+const bot = new Client({ 
+    intents: [
+        IntentsBitField.Flags.Guilds,
+        IntentsBitField.Flags.GuildMembers,
+        IntentsBitField.Flags.GuildMessages,
+        IntentsBitField.Flags.MessageContent,
+        IntentsBitField.Flags.GuildVoiceStates,
+    ],
+    partials: [
+        Partials.Channel,
+    ],
+});
 
 new CommandHandler({
     client: bot,
@@ -27,7 +32,7 @@ new CommandHandler({
 (async () => {
     try {
         await noblox.setCookie(process.env.ROBLOSECURITY);
-        console.log("Logged into the ROBLOX account successfully!");
+        console.log(`Logged into ${(await noblox.getAuthenticatedUser()).name} successfully!`);
     } catch (e) {
         console.log(`Failed to log into the ROBLOX account: ${e}`);
         return;

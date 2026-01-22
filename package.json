@@ -10,12 +10,15 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "@discordjs/voice": "^0.19.0",
     "discord.js": "^14.25.1",
     "djs-commander": "^0.0.50",
     "dotenv": "^17.2.3",
     "file": "^0.2.2",
-    "mongoose": "^9.0.1",
+    "mongoose": "^9.1.1",
     "noblox.js": "^6.2.0",
-    "nodemon": "^3.1.11"
+    "nodemon": "^3.1.11",
+    "yt-search": "^2.13.1",
+    "ytdl-core": "^4.11.5"
   }
 }

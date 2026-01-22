@@ -1,6 +1,6 @@
 "use strict";
 
-const {SlashCommandBuilder, EmbedBuilder, Colors, MessageFlags, ChatInputCommandInteraction } = require('discord.js');
+const {SlashCommandBuilder, EmbedBuilder, Colors, MessageFlags, ChatInputCommandInteraction, Message } = require('discord.js');
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -38,6 +38,16 @@ module.exports = {
             for (let i = 0; i < iterations; i++) {
                 let index = (rawUserData.indexOf(',' !== -1)) ? rawUserData.indexOf(',') : rawUserData.length;
                 let content = rawUserData.substring(0, index);
+
+                if (content === interaction.user.id) {
+                    let embed = new EmbedBuilder()
+                    .setTitle(`❌ Attempted to Ban self`)
+                    .setDescription(`You cannot ban yourself from the server. Why would you even try to do that?`)
+                    .setColor(Colors.Red)
+                    .setTimestamp();
+
+                    return await interaction.editReply({embeds: [embed], flags: MessageFlags.Ephemeral})
+                }
 
                 // NOTE: Discord.js will error if an already banned user is provided in the list, skip users who are already banned
                 if (currentBanned.find(ban => ban.user.id === content)) {

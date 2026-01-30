@@ -1,1 +1,2 @@
+# Do not expose environment variables
 .env

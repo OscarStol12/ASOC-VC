@@ -1,6 +1,7 @@
 "use strict";
 
 const {SlashCommandBuilder, EmbedBuilder, Colors, MessageFlags, ChatInputCommandInteraction, Message } = require('discord.js');
+const isModerator = require(`${PROJECT_ROOT}/src/validations/isModerator`);
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -26,6 +27,7 @@ module.exports = {
         let reason = interaction.options.getString(`reason`, true);
 
         try {
+            if (!(await isModerator(interaction))) return;
             await interaction.deferReply();
 
             // Get all users being banned
@@ -37,20 +39,12 @@ module.exports = {
 
             for (let i = 0; i < iterations; i++) {
                 let index = (rawUserData.indexOf(',' !== -1)) ? rawUserData.indexOf(',') : rawUserData.length;
-                let content = rawUserData.substring(0, index);
-
-                if (content === interaction.user.id) {
-                    let embed = new EmbedBuilder()
-                    .setTitle(`❌ Attempted to Ban self`)
-                    .setDescription(`You cannot ban yourself from the server. Why would you even try to do that?`)
-                    .setColor(Colors.Red)
-                    .setTimestamp();
-
-                    return await interaction.editReply({embeds: [embed], flags: MessageFlags.Ephemeral})
-                }
+                let content = rawUserData.substring(0, index).trim();
 
                 // NOTE: Discord.js will error if an already banned user is provided in the list, skip users who are already banned
-                if (currentBanned.find(ban => ban.user.id === content)) {
+                if (content === interaction.user.id) {
+                    skipped++;
+                } else if (currentBanned.find(ban => ban.user.id === content)) {
                     skipped++;
                 } else if (!users.includes(content)) {
                     users[i - skipped] = content;
@@ -61,10 +55,12 @@ module.exports = {
                 rawUserData = rawUserData.substring(index + 1);
             }
 
-            if (currentBanned.find(ban => ban.user.id === rawUserData)) {
+            if (rawUserData.trim() === interaction.user.id) {
                 skipped++;
-            } else if (!users.includes(rawUserData)) {
-                users[users.length] = rawUserData;
+            } else if (currentBanned.find(ban => ban.user.id === rawUserData.trim())) {
+                skipped++;
+            } else if (!users.includes(rawUserData.trim())) {
+                users[users.length] = rawUserData.trim();
             } else {
                 skipped++;
             }
@@ -111,8 +107,4 @@ module.exports = {
             await interaction.editReply({embeds: [embed], flags: MessageFlags.Ephemeral});
         }
     },
-
-    validations: {
-        isModerator: true,
-    }
 }

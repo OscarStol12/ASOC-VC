@@ -2,6 +2,7 @@
 
 const { EmbedBuilder, SlashCommandBuilder, MessageFlags, Colors } = require('discord.js');
 const UserStats = require(`${PROJECT_ROOT}/data/UserStats`);
+const hasHostingRights = require(`${PROJECT_ROOT}/src/validations/hasHostingRights`);
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -25,65 +26,63 @@ module.exports = {
 
     run: async ({ interaction }) => {
         try {
-                    let target = interaction.options.getUser('user');
-                    let amount = interaction.options.getInteger('amount');
-                    let reason = interaction.options.getString('reason');
-        
-                    if (amount < 1) {
-                        let embed = new EmbedBuilder()
-                        .setTitle(`❌ Error`)
-                        .setDescription(`Invalid amount of promotion points entered. Please enter a positive number for this command to work.`)
-                        .setColor(Colors.Red)
-                        .setTimestamp();
-        
-                        await interaction.reply({embeds: [embed], flags: MessageFlags.Ephemeral});
-                        return;
-                    }
-        
-                    const query = {
-                        discordId: target.id,
-                    }
-        
-                    let stats = await UserStats.findOne(query);
-                    if (!stats) {
-                        stats = new UserStats({
-                            discordId: target.id,
-                            hostedOps: 0,
-                            coHostedOps: 0,
-                            hostedTrainings: 0,
-                            coHostedTrainings: 0,
-                            warnos: 0,
-                            currentOp: "None",
-                            currentWarno: "None",
-                            promoPoints: 0,
-                            nextDailyAt: 0,
-                        })
-        
-                        await stats.save();
-                    }
-        
-                    stats.promoPoints -= amount;
-                    await stats.save();
-        
-                    let embed = new EmbedBuilder()
-                    .setTitle(`✅ Success`)
-                    .setDescription(`Successfully removed ${amount} Promotion Points from <@${target.id}>.\nPoints: <:promotion_point:959090715923726346>${stats.promoPoints + amount} -> <:promotion_point:959090715923726346>${stats.promoPoints}\nReason: ${reason}`)
-                    .setColor(Colors.Green)
-                    .setTimestamp();
-        
-                    await interaction.reply({embeds: [embed]});
-                } catch (e) {
-                    let embed = new EmbedBuilder()
-                    .setTitle(`❌ Error`)
-                    .setDescription(`An error occured while removing user balance: ${e}`)
-                    .setColor(Colors.Red)
-                    .setTimestamp();
-        
-                    await interaction.reply({embeds: [embed], flags: MessageFlags.Ephemeral});
-                }
-    },
+            if (!(await hasHostingRights(interaction))) return;
 
-    validations: {
-        hasHostingRights: true,
+            let target = interaction.options.getUser('user');
+            let amount = interaction.options.getInteger('amount');
+            let reason = interaction.options.getString('reason');
+        
+            if (amount < 1) {
+                let embed = new EmbedBuilder()
+                .setTitle(`❌ Error`)
+                .setDescription(`Invalid amount of promotion points entered. Please enter a positive number for this command to work.`)
+                .setColor(Colors.Red)
+                .setTimestamp();
+        
+                await interaction.reply({embeds: [embed], flags: MessageFlags.Ephemeral});
+                return;
+            }
+        
+            const query = {
+                discordId: target.id,
+            }
+        
+            let stats = await UserStats.findOne(query);
+            if (!stats) {
+                stats = new UserStats({
+                    discordId: target.id,
+                    hostedOps: 0,
+                    coHostedOps: 0,
+                    hostedTrainings: 0,
+                    coHostedTrainings: 0,
+                    warnos: 0,
+                    currentOp: "None",
+                    currentWarno: "None",
+                    promoPoints: 0,
+                    nextDailyAt: 0,
+                })
+        
+                await stats.save();
+            }
+        
+            stats.promoPoints -= amount;
+            await stats.save();
+        
+            let embed = new EmbedBuilder()
+            .setTitle(`✅ Success`)
+            .setDescription(`Successfully removed ${amount} Promotion Points from <@${target.id}>.\nPoints: <:promotion_point:959090715923726346>${stats.promoPoints + amount} -> <:promotion_point:959090715923726346>${stats.promoPoints}\nReason: ${reason}`)
+            .setColor(Colors.Green)
+            .setTimestamp();
+        
+            await interaction.reply({embeds: [embed]});
+        } catch (e) {
+            let embed = new EmbedBuilder()
+            .setTitle(`❌ Error`)
+            .setDescription(`An error occured while removing user balance: ${e}`)
+            .setColor(Colors.Red)
+            .setTimestamp();
+        
+            await interaction.reply({embeds: [embed], flags: MessageFlags.Ephemeral});
+        }
     },
 }

@@ -1,7 +1,8 @@
 "use strict";
 
-const { EmbedBuilder, SlashCommandBuilder, MessageFlags, Colors } = require('discord.js');
+const { EmbedBuilder, SlashCommandBuilder, MessageFlags, Colors, ChatInputCommandInteraction } = require('discord.js');
 const UserStats = require(`${PROJECT_ROOT}/data/UserStats`);
+const hasHostingRights = require(`${PROJECT_ROOT}/src/validations/hasHostingRights`);
 
 module.exports = {
     data: new SlashCommandBuilder()
@@ -23,8 +24,16 @@ module.exports = {
         .setRequired(true)
     ),
 
+    /**
+     * 
+     * @param {Object} param0 
+     * @param {ChatInputCommandInteraction} param0.interaction
+     * @returns 
+     */
     run: async ({ interaction }) => {
         try {
+            if (!(await hasHostingRights(interaction))) return;
+
             let target = interaction.options.getUser('user');
             let amount = interaction.options.getInteger('amount');
             let reason = interaction.options.getString('reason');
@@ -82,8 +91,4 @@ module.exports = {
             await interaction.reply({embeds: [embed], flags: MessageFlags.Ephemeral});
         }
     },
-
-    validations: {
-        hasHostingRights: true,
-    }
 }

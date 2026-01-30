@@ -18,7 +18,7 @@ module.exports = {
                 let embed = new EmbedBuilder()
                 .setName(`⛔ Access Denied`)
                 .setDescription(`You do not have the proper permissions to use this command.`)
-                .setColor(Colors.Red)
+                .setColor(Colors.NotQuiteBlack)
                 .setTimestamp();
 
                 await interaction.reply({embeds: [embed], flags: MessageFlags.Ephemeral});

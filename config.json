@@ -1,25 +1,82 @@
 {
     "clearances": {
-        "General-Public": "1425622486229323918",
-        "Junior-Enlisted": "1425620382932537394",
-        "Senior-Enlisted": "1425950091835080867",
-        "Warrant-Officer": "1425620462607532213",
-        "Company-Officer": "1425620374640394240",
-        "Field-Officer": "1425950022901567679",
-        "General-Officer": "1427422731577589800",
-        "NBTF-Representative": "1425943059744559195",
-        "Operation-Leading": "1430992667587907675"
+        "General-Public": {
+            "PRODUCTION": "1425622486229323918",
+            "TESTING": "1465441265435803840"
+        },
+
+        "Junior-Enlisted": {
+            "PRODUCTION": "1425620382932537394",
+            "TESTING": "1465441244993028263"
+        },
+
+        "Senior-Enlisted": {
+            "PRODUCTION:": "1425950091835080867",
+            "TESTING": "1465441241155109049"
+        },
+
+        "Warrant-Officer": {
+            "PRODUCTION": "1425620462607532213",
+            "TESTING": "1465441239410409674"
+        },
+
+        "Company-Officer": {
+            "PRODUCTION": "1425620374640394240",
+            "TESTING": "1465441236046446767"
+        },
+
+        "Field-Officer": {
+            "PRODUCTION": "1425950022901567679",
+            "TESTING": "1465441231990689916"
+        },
+
+        "General-Officer": {
+            "PRODUCTION": "1427422731577589800",
+            "TESTING": "1465441230652707120"
+        },
+
+        "NBTF-Representative": {
+            "PRODUCTION": "1425943059744559195",
+            "TESTING": "1465441246880469063"
+        },
+
+        "Operation-Leading": {
+            "PRODUCTION": "1430992667587907675",
+            "TESTING": "1465441233781657768"
+        }
     },
 
     "units": {
-        "HQASOC": "968531786281918609",
-        "SWCS": "968535396046749777",
-        "SFOI": "965812699516768256",
-        "NCOA": "968532385304035360",
-        "DOTD": "968542777606557736"
+        "HQASOC": {
+            "PRODUCTION": "968531786281918609",
+            "TESTING": "1465441349825204329"
+        },
+
+        "SWCS": {
+            "PRODUCTION": "968535396046749777",
+            "TESTING": "1465441394586943743"
+        },
+
+        "SFOI": {
+            "PRODUCTION": "965812699516768256",
+            "TESTING": "1465441405320171552"
+        },
+
+        "NCOA": {
+            "PRODUCTION": "968532385304035360",
+            "TESTING": "1465441407819841556"
+        },
+
+        "DOTD": {
+            "PRODUCTION": "968542777606557736",
+            "TESTING": "1465441425800953931"
+        }
     },
 
     "roles": {
-        "Moderator": "1436089744445669426"
+        "Moderator": {
+            "PRODUCTION": "1436089744445669426",
+            "TESTNG": "1465441053837361172"
+        }
     }
 }

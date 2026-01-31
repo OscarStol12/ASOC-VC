@@ -203,8 +203,8 @@ module.exports = {
             }
         
             await noblox.setRank(groupInfo.id, user.id, rank);
-            let newRank = await noblox.getRankNameInGroup(groupInfo.id, user.id);
             let targetThumbnail = (await noblox.getPlayerThumbnail(user.id, 100, "png", false, "headshot"))[0];
+            let newRank = await noblox.getRankNameInGroup(groupInfo.id, user.id);
         
             let title = (rank > targetRank) ? `⬆️ User Promotion` : `⬇️ User Demotion`;
             let color = (rank > targetRank) ? Colors.Green : Colors.Red;

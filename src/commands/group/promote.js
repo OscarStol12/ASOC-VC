@@ -157,8 +157,8 @@ module.exports = {
             }
 
             await noblox.promote(groupInfo.id, user.id);
-            let newRank = await noblox.getRankNameInGroup(groupInfo.id, user.id);
             let targetThumbnail = (await noblox.getPlayerThumbnail(user.id, 100, "png", false, "headshot"))[0];
+            let newRank = await noblox.getRankNameInGroup(groupInfo.id, user.id);
 
             let logMsg = new EmbedBuilder()
             .setTitle(`⬆️ User Promotion`)

@@ -1,4 +1,6 @@
 {
+    "group": 14291077,
+    
     "clearances": {
         "General-Public": {
             "PRODUCTION": "1425622486229323918",
@@ -77,6 +79,15 @@
         "Moderator": {
             "PRODUCTION": "1436089744445669426",
             "TESTNG": "1465441053837361172"
+        }
+    },
+
+    "channels": {
+        "logging": {
+            "ranks": {
+                "PRODUCTION": "1466915945191571527",
+                "TESTING": "1466915603880087613"
+            }
         }
     }
 }

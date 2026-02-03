@@ -1,6 +1,6 @@
 "use strict";
 
-const { SlashCommandBuilder, Colors, MessageFlags, EmbedBuilder } = require('discord.js');
+const { SlashCommandBuilder, Colors, MessageFlags, EmbedBuilder, ChatInputCommandInteraction } = require('discord.js');
 const UserVerification = require(`${PROJECT_ROOT}/data/UserVerification`);
 
 module.exports = {
@@ -13,8 +13,12 @@ module.exports = {
         .setRequired(true)
     ),
 
+    /**
+     * @param {Object} param0
+     * @param {ChatInputCommandInteraction} param0.interaction
+     */
     run: async ({ interaction }) => {
-        let rawOffsetData = interaction.options.getString('offset');
+        let rawOffsetData = interaction.options.getString('offset', true);
         try {
             if (!rawOffsetData.startsWith("UTC")) {
                 let embed = new EmbedBuilder()

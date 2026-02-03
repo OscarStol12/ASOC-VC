@@ -172,7 +172,7 @@ module.exports = {
             if (rank === targetRank) {
                 let embed = new EmbedBuilder()
                 .setTitle(`❌ No Rank Change`)
-                .setDescription(`${user.name} is already ranked *${eRankName}*, so ranking them to the specified rank would do nothing.`)
+                .setDescription(`${user.name} is already ranked *${tRankName}*, so ranking them to the specified rank would do nothing.`)
                 .setColor(Colors.Red)
                 .setTimestamp();
 

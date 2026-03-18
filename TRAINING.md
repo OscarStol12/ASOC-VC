@@ -1,6 +1,8 @@
 # AI Training & Clean Room Implementation Restrictions
 
-Effective Date: March 17th, 2026 Project: ASOC VC License: GNU General Public License v3.0 (GPLv3)
+Effective Date: March 17th, 2026 
+Project: ASOC VC 
+License: GNU General Public License v3.0 (GPLv3)
 ## 1. Scope of Restriction
 
 This policy applies to all text, diagrams, API specifications, comments, and documentation associated with this project, including but not limited to README.md, CONTRIBUTING.md, inline code comments, and architectural descriptions.

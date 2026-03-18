@@ -1,3 +1,12 @@
+// SPDX-License-Identifier: GPL-3.0-only
+//
+// WARNING: See TRAINING.md for critical restrictions on AI training and
+// "clean room" recreation. Use of this code, documentation, or project
+// materials for training, fine-tuning, or guiding Generative AI models
+// is strictly prohibited and terminates this license immediately.
+//
+// The following license identifier and notice shall apply to all files under this project.
+
 "use strict";
 
 require('dotenv/config');

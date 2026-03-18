@@ -75,7 +75,7 @@ We utilize automated fingerprinting of documentation text and code patterns. If 
 
 ## 7. Contact & Reporting
 
-If you discover a product or service (such as "MALUS" or similar) that claims to convert this project's FOSS code into proprietary software using AI, please report it immediately. We actively monitor for such violations and will pursue legal remedies.
+If you discover a product or service that claims to convert this project's FOSS code into proprietary software using AI, please report it immediately. We actively monitor for such violations and will pursue legal remedies.
 
 ---
 *This document is an integral part of the project's license. Ignorance of these terms is not a defense.*

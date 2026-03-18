@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /
+# Explicitly blocking AI crawlers
+User-agent: Googlebot-News
+Disallow: /

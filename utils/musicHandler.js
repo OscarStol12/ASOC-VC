@@ -188,16 +188,12 @@ function playAudio(audio) {
         case 'youtube': {
             process = spawn('yt-dlp', [
                 '--cookies', `${PROJECT_ROOT}/cookies/yt-cookies.txt`,
-                '-f', 'bestaudio/best',
-                '--extract-audio',
-                '--force-ipv4',
-                '--audio-format', 'opus',
+                '-f', '251/bestaudio/best',
                 '--audio-quality', '0',
                 '--js-runtimes', 'node',
                 '--no-playlist',
                 '--sponsorblock-remove', 'default',
                 '--remote-components', 'ejs:github',
-                '--extractor-args', 'youtube:player_client=android',
                 '-o', '-',
                 metadata.url,
             ], { stdio: ['ignore', 'pipe', 'pipe'] });

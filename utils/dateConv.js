@@ -9,14 +9,12 @@ function convertToPrettyTime(raw) {
     let hours = Math.floor((raw - (days * 86_400_000)) / 3_600_000);
     let minutes = Math.floor((raw - (days * 86_400_000 + hours * 3_600_000)) / 60_000);
     let seconds = Math.floor((raw - (days * 86_400_000 + hours * 3_600_000 + minutes * 60_000)) / 1_000);
-    let millis = Math.floor(raw - (days * 86_400_000 + hours * 3_600_000 + minutes * 60_000 + seconds * 1_000));
 
     let finalString = ``;
     if (days > 0) finalString += `${days}d `;
     if (hours > 0) finalString += `${hours}h `;
     if (minutes > 0) finalString += `${minutes}m `;
     if (seconds > 0) finalString += `${seconds}s `;
-    if (millis > 0) finalString += `${millis}ms `;
     return finalString.substring(0, finalString.length - 1);
 }
 

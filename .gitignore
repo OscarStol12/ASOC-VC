@@ -1,2 +1,5 @@
 # Do not expose environment variables
 .env
+
+# Do not expose cookies
+cookies

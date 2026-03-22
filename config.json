@@ -45,6 +45,11 @@
         "Operation-Leading": {
             "PRODUCTION": "1430992667587907675",
             "TESTING": "1465441233781657768"
+        },
+
+        "Music-Controller": {
+            "PRODUCTION": "1453946926541312031",
+            "TESTING": "1465441267977683067"
         }
     },
 
@@ -78,7 +83,7 @@
     "roles": {
         "Moderator": {
             "PRODUCTION": "1436089744445669426",
-            "TESTNG": "1465441053837361172"
+            "TESTING": "1465441053837361172"
         }
     },
 

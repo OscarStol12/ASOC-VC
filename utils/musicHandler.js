@@ -189,11 +189,14 @@ function playAudio(audio) {
             process = spawn('yt-dlp', [
                 '--cookies', `${PROJECT_ROOT}/cookies/yt-cookies.txt`,
                 '-f', '251/bestaudio/best',
+                '--force-ipv4',
                 '--audio-quality', '0',
                 '--js-runtimes', 'node',
                 '--no-playlist',
                 '--sponsorblock-remove', 'default',
                 '--remote-components', 'ejs:github',
+                '--extract-audio',
+                '--audio-format', 'opus',
                 '-o', '-',
                 metadata.url,
             ], { stdio: ['ignore', 'pipe', 'pipe'] });

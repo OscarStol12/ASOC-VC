@@ -37,6 +37,7 @@ module.exports = {
      * @param {ChatInputCommandInteraction} param0.interaction
      */
     run: async ({interaction}) => {
+        await interaction.deferReply();
         const subcommand = interaction.options.getSubcommand();
 
         try {
@@ -49,7 +50,7 @@ module.exports = {
                 .setColor(Colors.Red)
                 .setTimestamp();
 
-                await interaction.reply({embeds: [embed], flags: MessageFlags.Ephemeral});
+                await interaction.editReply({embeds: [embed], flags: MessageFlags.Ephemeral});
                 return;
             }
 
@@ -79,7 +80,7 @@ module.exports = {
                         .setColor(Colors.Red)
                         .setTimestamp();
 
-                        await interaction.reply({embeds: [embed], flags: MessageFlags.Ephemeral});
+                        await interaction.editReply({embeds: [embed], flags: MessageFlags.Ephemeral});
                         return;
                     }
 
@@ -102,7 +103,7 @@ module.exports = {
                         .setColor(Colors.Red)
                         .setTimestamp();
 
-                        await interaction.reply({embeds: [embed], flags: MessageFlags.Ephemeral});
+                        await interaction.editReply({embeds: [embed], flags: MessageFlags.Ephemeral});
                         return;
                     }
 
@@ -111,7 +112,7 @@ module.exports = {
                     .setDescription(`The following song was successfully added to the queue:\n\n**Title:** ${escapeDiscordMarkdown(metadata.title)}\n**Artist:** ${escapeDiscordMarkdown(metadata.artist)}\n**Duration:** ${escapeDiscordMarkdown(convertToPrettyTime(parseFloat(metadata.duration) * 1000))}`)
                     .setColor(Colors.Green)
                     .setTimestamp();
-                    await interaction.reply({embeds: [embed]});
+                    await interaction.editReply({embeds: [embed]});
 
                     break;
                 }
@@ -140,7 +141,7 @@ module.exports = {
                             .setColor(Colors.Red)
                             .setTimestamp();
 
-                            await interaction.reply({embeds: [embed], flags: MessageFlags.Ephemeral});
+                            await interaction.editReply({embeds: [embed], flags: MessageFlags.Ephemeral});
                             return;
                         }
 
@@ -150,7 +151,7 @@ module.exports = {
                         .setColor(Colors.Green)
                         .setTimestamp();
 
-                        await interaction.reply({embeds: [embed]});
+                        await interaction.editReply({embeds: [embed]});
                     } else if (validation === "search") {
                         let search = await ytSearch(input);
 
@@ -161,7 +162,7 @@ module.exports = {
                             .setColor(Colors.Red)
                             .setTimestamp();
 
-                            await interaction.reply({embeds: [embed], flags: MessageFlags.Ephemeral});
+                            await interaction.editReply({embeds: [embed], flags: MessageFlags.Ephemeral});
                             return;
                         }
 
@@ -184,7 +185,7 @@ module.exports = {
                             .setColor(Colors.Red)
                             .setTimestamp();
 
-                            await interaction.reply({embeds: [embed], flags: MessageFlags.Ephemeral});
+                            await interaction.editReply({embeds: [embed], flags: MessageFlags.Ephemeral});
                             return;
                         }
 
@@ -205,7 +206,7 @@ module.exports = {
                             .setColor(Colors.Red)
                             .setTimestamp();
 
-                            await interaction.reply({embeds: [embed], flags: MessageFlags.Ephemeral});
+                            await interaction.editReply({embeds: [embed], flags: MessageFlags.Ephemeral});
                             return;
                         }
 
@@ -227,7 +228,7 @@ module.exports = {
                         .setColor(Colors.Green)
                         .setTimestamp();
 
-                        await interaction.reply({embeds: [embed]});
+                        await interaction.editReply({embeds: [embed]});
                     } else {
                         let embed = new EmbedBuilder()
                         .setTitle(`❌ Invalid Input`)
@@ -235,7 +236,7 @@ module.exports = {
                         .setColor(Colors.Red)
                         .setTimestamp();
 
-                        await interaction.reply({embeds: [embed], flags: MessageFlags.Ephemeral});
+                        await interaction.editReply({embeds: [embed], flags: MessageFlags.Ephemeral});
                         return;
                     }
 
@@ -249,7 +250,7 @@ module.exports = {
                     .setColor(Colors.Red)
                     .setTimestamp();
 
-                    await interaction.reply({embeds: [embed], flags: MessageFlags.Ephemeral});
+                    await interaction.editReply({embeds: [embed], flags: MessageFlags.Ephemeral});
                     return;
                 }
             }
@@ -260,7 +261,7 @@ module.exports = {
             .setColor(Colors.Red)
             .setTimestamp();
 
-            await interaction.reply({embeds: [embed], flags: MessageFlags.Ephemeral});
+            await interaction.editReply({embeds: [embed], flags: MessageFlags.Ephemeral});
             return;
         }
     },

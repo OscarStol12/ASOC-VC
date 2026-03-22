@@ -195,7 +195,7 @@ module.exports = {
                         .setColor(Colors.Green)
                         .setTimestamp();
 
-                        await interaction.reply({embeds: [embed]});
+                        await interaction.editReply({embeds: [embed]});
                     } else if (validation === "playlist") {
                         const videos = await getPlaylistVideos(input);
 

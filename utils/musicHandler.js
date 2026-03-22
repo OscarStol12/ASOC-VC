@@ -190,6 +190,7 @@ function playAudio(audio) {
                 '--cookies', `${PROJECT_ROOT}/cookies/yt-cookies.txt`,
                 '-f', 'bestaudio/best',
                 '--extract-audio',
+                '--force-ipv4',
                 '--audio-format', 'opus',
                 '--audio-quality', '0',
                 '--js-runtimes', 'node',

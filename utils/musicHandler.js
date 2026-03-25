@@ -1,7 +1,7 @@
 "use strict";
 
 const { EmbedBuilder, Colors, ChatInputCommandInteraction } = require('discord.js');
-const { joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerStatus, StreamType } = require('@discordjs/voice');
+const { joinVoiceChannel, createAudioPlayer, createAudioResource, AudioPlayerStatus, StreamType, VoiceConnectionStatus } = require('@discordjs/voice');
 const { spawn } = require('child_process');
 
 const { convertToPrettyTime } = require(`${PROJECT_ROOT}/utils/dateConv.js`);
@@ -49,6 +49,17 @@ function addSongToQueue(interaction, metadata) {
         });
 
         connection.subscribe(player);
+
+        connection.on('stateChange', (oldState, newState) => {
+            if (newState.status === VoiceConnectionStatus.Disconnected || newState.status === VoiceConnectionStatus.Destroyed) {
+                connection = null;
+                currentChannel = null;
+                currentSong = null;
+                player.stop();
+
+                MUSIC_QUEUE = [];
+            }
+        });
     }
 
     if (player.state.status === AudioPlayerStatus.Idle && !paused && !inBetweenSongs) {
@@ -163,12 +174,12 @@ function getQueue() {
 }
 
 function playAudio(audio) {
-    let process;
+    let audioProcess;
     let metadata = audio.metadata;
     
     switch (metadata.source) {
         case 'local': {
-            process = spawn('ffmpeg', [
+            audioProcess = spawn('ffmpeg', [
                 '-i', metadata.url,
                 '-analyzeduration', '0',
                 '-loglevel', '0',
@@ -186,9 +197,10 @@ function playAudio(audio) {
         }
 
         case 'youtube': {
-            process = spawn('yt-dlp', [
+            audioProcess = spawn('yt-dlp', [
                 '--cookies', `${PROJECT_ROOT}/cookies/yt-cookies.txt`,
                 '--user-agent', 'Mozilla/5.0 (X11; Linux x86_64; rv:148.0) Gecko/20100101 Firefox/148.0',
+                //'--proxy', process.env.HOME_PROXY,
                 '-f', '251/bestaudio/best',
                 '--force-ipv4',
                 '--audio-quality', '0',
@@ -201,6 +213,23 @@ function playAudio(audio) {
                 '-o', '-',
                 metadata.url,
             ], { stdio: ['ignore', 'pipe', 'pipe'] });
+
+            process.on('error', (err) => {
+                console.error(`Process spawn error:`, err);
+                player.stop();
+            });
+
+            process.on('close', (code) => {
+                console.log(`Process closed with code ${code}`);
+                if (code !== 0 && code !== 141) { // 141 = SIGPIPE (normal if receiver closes)
+                    console.error(`Process failed unexpectedly.`);
+                }
+            });
+
+            process.stderr.on('data', (chunk) => {
+                console.error(`yt-dlp stderr: ${chunk}`);
+            });
+
             break;
         }
 
@@ -210,7 +239,7 @@ function playAudio(audio) {
     }
 
     currentSong = audio;
-    const resource = createAudioResource(process.stdout, {
+    const resource = createAudioResource(audioProcess.stdout, {
         inputType: StreamType.Arbitrary,
     });
 

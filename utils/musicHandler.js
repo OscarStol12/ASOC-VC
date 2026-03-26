@@ -214,19 +214,19 @@ function playAudio(audio) {
                 metadata.url,
             ], { stdio: ['ignore', 'pipe', 'pipe'] });
 
-            process.on('error', (err) => {
+            audioProcess.on('error', (err) => {
                 console.error(`Process spawn error:`, err);
                 player.stop();
             });
 
-            process.on('close', (code) => {
+            audioProcess.on('close', (code) => {
                 console.log(`Process closed with code ${code}`);
                 if (code !== 0 && code !== 141) { // 141 = SIGPIPE (normal if receiver closes)
                     console.error(`Process failed unexpectedly.`);
                 }
             });
 
-            process.stderr.on('data', (chunk) => {
+            audioProcess.stderr.on('data', (chunk) => {
                 console.error(`yt-dlp stderr: ${chunk}`);
             });
 

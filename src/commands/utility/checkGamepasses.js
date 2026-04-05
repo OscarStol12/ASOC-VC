@@ -1,7 +1,8 @@
 "use strict";
 
 const {SlashCommandBuilder, EmbedBuilder, MessageFlags, Colors} = require('discord.js');
-const noblox = require('noblox.js');
+//const noblox = require('noblox.js');
+const { getPlayerThumbnail, ownsGamepass } = require(`${PROJECT_ROOT}/lib/roblox-api.js`);
 const verificationDB = require(`${PROJECT_ROOT}/data/UserVerification`);
 
 module.exports = {
@@ -81,14 +82,14 @@ module.exports = {
                 let valid = false;
                 if (isNaN(target)) {
                     // Username was provided
-                    robloxId = `${await noblox.getIdFromUsername(target)}`;
+                    //robloxId = `${await noblox.getIdFromUsername(target)}`;
                     robloxName = `${target}`;
-                    valid = (robloxId != 'null');
+                    valid = true;
                 } else {
                     // User ID was provided
-                    robloxId = `${target}`;
+                    //robloxId = `${target}`;
                     robloxName = `${await noblox.getUsernameFromId(target)}`;
-                    valid = (robloxName != 'null');
+                    valid = true;
                 }
 
                 if (!valid) {
@@ -140,12 +141,14 @@ module.exports = {
                 {id: 15137680, name: "Commando"}
             ]
 
-            let thumbnailReq = await noblox.getPlayerThumbnail(robloxId, 100, "png", false, "headshot");
+            robloxId = 34535898
+
+            let thumbnailReq = await getPlayerThumbnail(robloxId, "100x100", "png", false, "headshot");
             let userThumbnail = thumbnailReq[0];
             let gpCount = 0;
             for (let i = 0; i < gamepassesToCheck.length; i++) {
                 let gpInfo = gamepassesToCheck[i];
-                let ownsGP = await noblox.getOwnership(robloxId, gpInfo.id, "GamePass");
+                let ownsGP = await ownsGamepass(robloxId, gpInfo.id);
                 if (ownsGP) {
                     if (gpCount == 0) ownedGamepasses += (gpInfo.name);
                     else ownedGamepasses += ("\n" + gpInfo.name);

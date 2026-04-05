@@ -93,6 +93,18 @@
                 "PRODUCTION": "1466915945191571527",
                 "TESTING": "1466915603880087613"
             }
+        },
+
+        "mr-lobby": {
+            "PRODUCTION": "",
+            "TESTING": "1488947433319956621"
+        }
+    },
+
+    "categories": {
+        "meetings": {
+            "PRODUCTION": "",
+            "TESTING": "1489287152062824559"
         }
     }
 }

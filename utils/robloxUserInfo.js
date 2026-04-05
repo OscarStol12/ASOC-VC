@@ -1,7 +1,19 @@
 "use strict";
 
-const noblox = require('noblox.js');
+const { RobloxClient } = require('rozod');
 const VerificationData = require(`${PROJECT_ROOT}/data/UserVerification`);
+
+let _rozodClient = null;
+
+async function getClient() {
+    if (!_rozodClient) {
+        _rozodClient = new RobloxClient({
+            cookie: process.env.ROBLOSECURITY
+        })
+    }
+    
+    return _rozodClient;
+}
 
 /**
  * @param {string} info

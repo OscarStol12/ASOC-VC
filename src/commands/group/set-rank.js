@@ -1,7 +1,7 @@
 "use strict";
 
 const {SlashCommandBuilder, EmbedBuilder, MessageFlags, ChatInputCommandInteraction, Colors} = require('discord.js');
-const noblox = require('noblox.js');
+//const noblox = require('noblox.js');
 const config = require(`${PROJECT_ROOT}/config.json`);
 const hasRankingRights = require(`${PROJECT_ROOT}/src/validations/hasRankingRights`);
 const {getRobloxUserFromNameOrId, getRobloxUserFromDiscord} = require(`${PROJECT_ROOT}/utils/robloxUserInfo`);

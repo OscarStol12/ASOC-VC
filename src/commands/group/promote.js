@@ -1,7 +1,7 @@
 "use strict";
 
 const {ChatInputCommandInteraction, SlashCommandBuilder, EmbedBuilder, MessageFlags, Colors} = require('discord.js');
-const noblox = require('noblox.js');
+//const noblox = require('noblox.js');
 const config = require(`${PROJECT_ROOT}/config.json`);
 const hasRankingRights = require(`${PROJECT_ROOT}/src/validations/hasRankingRights`);
 const {getRobloxUserFromNameOrId, getRobloxUserFromDiscord} = require(`${PROJECT_ROOT}/utils/robloxUserInfo`);
@@ -67,6 +67,8 @@ module.exports = {
                     break;
                 }
             }
+
+            console.log(user);
 
             if (!user && subcommand === `from-discord`) {
                 let embed = new EmbedBuilder()

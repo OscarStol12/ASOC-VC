@@ -44,6 +44,18 @@ module.exports = {
      * @param {ChatInputCommandInteraction} param0.interaction 
      */
     run: async ({interaction}) => {
+        if (process.env.THIS_ENVIRONMENT === "PRODUCTION") {
+            let noticeEmbed = new EmbedBuilder()
+            .setTitle(`🔨 Under Maintenance`)
+            .setDescription(`This command is currently under maintenance, due to previous breakage. For the time being, please ask someone to manually rank users.`)
+            .setColor(Colors.Grey)
+            .setTimestamp();
+
+            await interaction.reply({embeds: [noticeEmbed], flags: MessageFlags.Ephemeral});
+
+            return;
+        }
+
         await interaction.deferReply();
 
         const subcommand = interaction.options.getSubcommand(true);

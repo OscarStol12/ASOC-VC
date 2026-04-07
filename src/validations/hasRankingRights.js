@@ -6,6 +6,7 @@ const config = require(`${PROJECT_ROOT}/config.json`);
 module.exports = async (interaction) => {
     let userRoles = interaction.member.roles;
     let canUseCmd = (
+        userRoles.cache.has(config.clearances['Defense-Official'][process.env.THIS_ENVIRONMENT]) ||
         userRoles.cache.has(config.clearances['General-Officer'][process.env.THIS_ENVIRONMENT]) ||
         userRoles.cache.has(config.units.HQASOC[process.env.THIS_ENVIRONMENT])
     );

@@ -1,8 +1,8 @@
 "use strict";
 
-const {SlashCommandBuilder, EmbedBuilder, MessageFlags, Colors} = require('discord.js');
-//const noblox = require('noblox.js');
-const { getPlayerThumbnail, ownsGamepass } = require(`${PROJECT_ROOT}/lib/roblox-api.js`);
+const { SlashCommandBuilder, EmbedBuilder, MessageFlags, Colors, ChatInputCommandInteraction} = require('discord.js');
+const { getPlayerThumbnail, getOwnership } = require(`${PROJECT_ROOT}/lib/roblox-api.js`);
+const { getRobloxUserFromDiscord, getRobloxUserFromNameOrId } = require(`${PROJECT_ROOT}/utils/robloxUserInfo.js`);
 const verificationDB = require(`${PROJECT_ROOT}/data/UserVerification`);
 
 module.exports = {
@@ -28,16 +28,20 @@ module.exports = {
         )
     ),
 
+    /**
+     * @param {Object} param0 
+     * @param {ChatInputCommandInteraction} param0.interaction
+     */
     run: async ({ interaction }) => {
-        let subCommand = interaction.options.getSubcommand();
+        let subCommand = interaction.options.getSubcommand(true);
         let robloxId = "";
         let robloxName = "";
 
         if (subCommand === 'discord') {
             try {
-                let target = interaction.options.get('user')?.value;
+                let target = interaction.options.getUser('user', true);
 
-                if (!interaction.guild.members.cache.has(target)) {
+                if (!(await interaction.guild.members.fetch(target))) {
                     let embed = new EmbedBuilder()
                     .setTitle('❌ Error')
                     .setDescription('The specified target is not in this server. Please consider using their ROBLOX Username in the /checkgamepasses roblox subcommand instead.')
@@ -48,24 +52,10 @@ module.exports = {
                     return;
                 }
 
-                const query = {
-                    discordId: target,
-                }
+                let robloxUserInfo = await getRobloxUserFromDiscord(target.id);
 
-                let DBEntry = await verificationDB.findOne(query);
-                if (!DBEntry) {
-                    let embed = new EmbedBuilder()
-                    .setTitle('❌ Error')
-                    .setDescription('The specified target is not linked to the PDP Bot Verification Database. Please consider asking them to run /link, or using their ROBLOX name in the /checkgamepasses roblox subcommand.')
-                    .setColor(Colors.Red)
-                    .setTimestamp();
-
-                    await interaction.reply({embeds: [embed], flags: MessageFlags.Ephemeral});
-                    return;
-                }
-
-                robloxId = DBEntry.robloxId;
-                robloxName = DBEntry.robloxName;
+                robloxId = robloxUserInfo.id;
+                robloxName = robloxUserInfo.name;
             } catch (e) {
                 let embed = new EmbedBuilder()
                 .setTitle('❌ Error')
@@ -78,21 +68,10 @@ module.exports = {
             }
         } else if (subCommand === 'roblox') {
             try {
-                let target = interaction.options.get('user')?.value;
-                let valid = false;
-                if (isNaN(target)) {
-                    // Username was provided
-                    //robloxId = `${await noblox.getIdFromUsername(target)}`;
-                    robloxName = `${target}`;
-                    valid = true;
-                } else {
-                    // User ID was provided
-                    //robloxId = `${target}`;
-                    robloxName = `${await noblox.getUsernameFromId(target)}`;
-                    valid = true;
-                }
+                let target = interaction.options.getString('user', true);
+                let robloxUserInfo = await getRobloxUserFromNameOrId(target);
 
-                if (!valid) {
+                if (robloxUserInfo === null) {
                     let embed = new EmbedBuilder()
                     .setTitle('❌ Error')
                     .setDescription(`The Username / ID Provided of ${target} does not belong to any ROBLOX account. Please check if you spelt the username / ID correctly.`)
@@ -102,6 +81,9 @@ module.exports = {
                     await interaction.reply({embeds: [embed], flags: MessageFlags.Ephemeral});
                     return;
                 }
+
+                robloxId = robloxUserInfo.id;
+                robloxName = robloxUserInfo.name;
             } catch (e) {
                 let embed = new EmbedBuilder()
                 .setTitle('❌ Error')
@@ -141,14 +123,12 @@ module.exports = {
                 {id: 15137680, name: "Commando"}
             ]
 
-            robloxId = 34535898
-
             let thumbnailReq = await getPlayerThumbnail(robloxId, "100x100", "png", false, "headshot");
             let userThumbnail = thumbnailReq[0];
             let gpCount = 0;
             for (let i = 0; i < gamepassesToCheck.length; i++) {
                 let gpInfo = gamepassesToCheck[i];
-                let ownsGP = await ownsGamepass(robloxId, gpInfo.id);
+                let ownsGP = await getOwnership(robloxId, gpInfo.id, "GamePass");
                 if (ownsGP) {
                     if (gpCount == 0) ownedGamepasses += (gpInfo.name);
                     else ownedGamepasses += ("\n" + gpInfo.name);

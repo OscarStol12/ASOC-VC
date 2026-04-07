@@ -45,7 +45,7 @@ new CommandHandler({
 (async () => {
     try {
         rozod.configureServer({cookies: process.env.ROBLOSECURITY});
-        console.log(`Logged into ${await getAuthenticatedUser()} successfully!`);
+        console.log(`Logged into ${(await getAuthenticatedUser()).name} successfully!`);
     } catch (e) {
         console.log(`Failed to log into the ROBLOX account: ${e.message}`);
         process.exit(0);

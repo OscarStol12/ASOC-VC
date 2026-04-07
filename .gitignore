@@ -3,3 +3,6 @@
 
 # Do not expose cookies
 cookies
+
+# Do not push node modules to git
+node_modules/

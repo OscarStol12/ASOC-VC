@@ -5,7 +5,7 @@ const VerificationData = require(`${PROJECT_ROOT}/data/UserVerification`);
 
 async function getRobloxUserFromNameOrId(info) {
     let user;
-    if (Number.isInteger(info)) {
+    if (!isNaN(info)) {
         // User ID provided
         user = await getUserInfo(parseInt(info));
     } else {
@@ -60,7 +60,7 @@ async function getRobloxUserFromDiscord(id) {
 async function getDiscordIdFromRobloxNameOrId(info) {
     let query;
 
-    if (Number.isInteger(info)) query = {
+    if (!isNaN(info)) query = {
         robloxId: info
     }; else query = {
         robloxName: info

@@ -123,7 +123,7 @@ module.exports = {
                 {id: 15137680, name: "Commando"}
             ]
 
-            let thumbnailReq = await getPlayerThumbnail(robloxId, "100x100", "png", false, "headshot");
+            let thumbnailReq = await getPlayerThumbnail(robloxId, "100x100", "Png", false);
             let userThumbnail = thumbnailReq[0];
             let gpCount = 0;
             for (let i = 0; i < gamepassesToCheck.length; i++) {

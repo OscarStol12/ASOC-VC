@@ -21,6 +21,8 @@ module.exports = {
      * @param {ChatInputCommandInteraction} param0.interaction
      */
     run: async ({interaction}) => {
+        await interaction.deferReply();
+
         try {
             const target = interaction.options.getUser('user') ?? interaction.user;
             const robloxUser = await getRobloxUserFromDiscord(target.id);
@@ -73,7 +75,7 @@ module.exports = {
             .setColor(Colors.Yellow)
             .setTimestamp();
 
-            await interaction.reply({embeds: [embed]});
+            await interaction.editReply({embeds: [embed]});
         } catch (e) {
             let embed = new EmbedBuilder()
             .setTitle(`❌ Error`)
@@ -81,7 +83,7 @@ module.exports = {
             .setColor(Colors.Red)
             .setTimestamp();
             
-            await interaction.reply({embeds: [embed], flags: MessageFlags.Ephemeral});
+            await interaction.editReply({embeds: [embed], flags: MessageFlags.Ephemeral});
             return;
         }
     },

@@ -1,7 +1,7 @@
 {
   "name": "asoc-vc",
-  "version": "1.5.2",
-  "build": "63",
+  "version": "1.5.3",
+  "build": "64",
   "description": "",
   "main": "src/index.js",
   "scripts": {
@@ -20,7 +20,7 @@
     "nodemon": "^3.1.14",
     "opusscript": "^0.0.8",
     "play-dl": "^1.9.7",
-    "rozod": "^6.6.0",
+    "rozod": "^6.5.1",
     "youtube-sr": "^4.3.12",
     "yt-search": "^2.13.1",
     "ytdl-core": "^4.11.5"

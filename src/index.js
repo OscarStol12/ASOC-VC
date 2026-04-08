@@ -14,12 +14,14 @@ require('dotenv/config');
 const { Client, IntentsBitField, Partials } = require('discord.js');
 const { CommandHandler } = require('djs-commander');
 
-const noblox = require('noblox.js');
+const rozod = require('rozod');
 const mongoose = require('mongoose');
 const path = require('path');
 
 global.PROJECT_ROOT = path.join(__dirname, '..');
 global.BEGIN_UPTIME = Date.now();
+
+const { getAuthenticatedUser } = require(`${PROJECT_ROOT}/lib/roblox-api.js`);
 
 const bot = new Client({ 
     intents: [
@@ -42,8 +44,8 @@ new CommandHandler({
 
 (async () => {
     try {
-        await noblox.setCookie(process.env.ROBLOSECURITY);
-        console.log(`Logged into ${(await noblox.getAuthenticatedUser()).name} successfully!`);
+        rozod.configureServer({cookies: process.env.ROBLOSECURITY});
+        console.log(`Logged into ${(await getAuthenticatedUser()).name} successfully!`);
     } catch (e) {
         console.log(`Failed to log into the ROBLOX account: ${e.message}`);
         process.exit(0);

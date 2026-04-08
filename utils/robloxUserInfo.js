@@ -1,30 +1,22 @@
 "use strict";
 
-const noblox = require('noblox.js');
+const { getUserInfo, getIdFromUsername, getUsernameFromId } = require(`${PROJECT_ROOT}/lib/roblox-api.js`)
 const VerificationData = require(`${PROJECT_ROOT}/data/UserVerification`);
 
-/**
- * @param {string} info
- * @returns {noblox.UserInfo}  
- */
 async function getRobloxUserFromNameOrId(info) {
     let user;
-    if (Number.isInteger(info)) {
+    if (!isNaN(info)) {
         // User ID provided
-        user = await noblox.getUserInfo(parseInt(info));
+        user = await getUserInfo(parseInt(info));
     } else {
         // Username provided
-        let id = await noblox.getIdFromUsername(info);
-        user = await noblox.getUserInfo(id);
+        let id = await getIdFromUsername(info);
+        user = await getUserInfo(id);
     }
 
     return user ?? null;
 }
 
-/**
- * @param {string} id 
- * @returns {noblox.UserInfo}
- */
 async function getRobloxUserFromDiscord(id) {
     let user;
 
@@ -35,7 +27,7 @@ async function getRobloxUserFromDiscord(id) {
     let dataEntry = await VerificationData.findOne(query);
 
     if (await hasRobloxAccountLinked(id)) {
-        user = await noblox.getUserInfo(parseInt(dataEntry.robloxId));
+        user = await getUserInfo(parseInt(dataEntry.robloxId));
     } else {
         if (!dataEntry) dataEntry = new VerificationData({
             discordId: id,
@@ -56,23 +48,19 @@ async function getRobloxUserFromDiscord(id) {
         const data = await response.json();
 
         dataEntry.robloxId = data.roblox_id;
-        dataEntry.robloxName = await noblox.getUsernameFromId(data.roblox_id);
+        dataEntry.robloxName = await getUsernameFromId(data.roblox_id);
         await dataEntry.save();
 
-        user = await noblox.getUserInfo(data.roblox_id);
+        user = await getUserInfo(data.roblox_id);
     }
 
     return user;
 }
 
-/**
- * @param {string} info
- * @returns {string | null}
- */
 async function getDiscordIdFromRobloxNameOrId(info) {
     let query;
 
-    if (Number.isInteger(info)) query = {
+    if (!isNaN(info)) query = {
         robloxId: info
     }; else query = {
         robloxName: info
@@ -84,10 +72,6 @@ async function getDiscordIdFromRobloxNameOrId(info) {
     else return null;
 }
 
-/**
- * @param {string} id 
- * @returns {boolean}
- */
 async function hasRobloxAccountLinked(id) {
     const query = {
         discordId: id,

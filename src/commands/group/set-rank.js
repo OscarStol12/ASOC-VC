@@ -1,10 +1,10 @@
 "use strict";
 
-const {SlashCommandBuilder, EmbedBuilder, MessageFlags, ChatInputCommandInteraction, Colors} = require('discord.js');
-const noblox = require('noblox.js');
+const { SlashCommandBuilder, EmbedBuilder, MessageFlags, ChatInputCommandInteraction, Colors } = require('discord.js');
 const config = require(`${PROJECT_ROOT}/config.json`);
 const hasRankingRights = require(`${PROJECT_ROOT}/src/validations/hasRankingRights`);
-const {getRobloxUserFromNameOrId, getRobloxUserFromDiscord} = require(`${PROJECT_ROOT}/utils/robloxUserInfo`);
+const { getRobloxUserFromNameOrId, getRobloxUserFromDiscord } = require(`${PROJECT_ROOT}/utils/robloxUserInfo`);
+const { getGroup, getRankInGroup, getRankNameInGroup, getAuthenticatedUser, getPlayerThumbnail, setRank, getRole } = require(`${PROJECT_ROOT}/lib/roblox-api.js`);
 
 const rankOpts = [
     {name: '[-] Civilian', value: 50},
@@ -84,18 +84,6 @@ module.exports = {
      * @param {ChatInputCommandInteraction} param0.interaction 
      */
     run: async ({interaction}) => {
-        if (process.env.THIS_ENVIRONMENT === "PRODUCTION") {
-            let noticeEmbed = new EmbedBuilder()
-            .setTitle(`🔨 Under Maintenance`)
-            .setDescription(`This command is currently under maintenance, due to previous breakage. For the time being, please ask someone to manually rank users.`)
-            .setColor(Colors.Grey)
-            .setTimestamp();
-
-            await interaction.reply({embeds: [noticeEmbed], flags: MessageFlags.Ephemeral});
-
-            return;
-        }
-        
         await interaction.deferReply();
 
         const subcommand = interaction.options.getSubcommand(true);
@@ -141,14 +129,14 @@ module.exports = {
                 return;
             }
         
-            let groupInfo = await noblox.getGroup(config.group);
+            let groupInfo = await getGroup(config.group);
             let executor = await getRobloxUserFromDiscord(interaction.user.id);
         
-            let targetRank = await noblox.getRankInGroup(groupInfo.id, user.id);
-            let executorRank = await noblox.getRankInGroup(groupInfo.id, executor.id);
+            let targetRank = await getRankInGroup(groupInfo.id, user.id);
+            let executorRank = await getRankInGroup(groupInfo.id, executor.id);
         
-            let tRankName = await noblox.getRankNameInGroup(groupInfo.id, user.id);
-            let eRankName = await noblox.getRankNameInGroup(groupInfo.id, executor.id);
+            let tRankName = await getRankNameInGroup(groupInfo.id, user.id);
+            let eRankName = await getRankNameInGroup(groupInfo.id, executor.id);
         
             if (executor.id === user.id) {
                 let embed = new EmbedBuilder()
@@ -161,7 +149,7 @@ module.exports = {
                 return;
             }
         
-            if (user.id === (await noblox.getAuthenticatedUser()).id) {
+            if (user.id === (await getAuthenticatedUser()).id) {
                 let embed = new EmbedBuilder()
                 .setTitle(`❌ Cannot Rank Bot`)
                 .setDescription(`You cannot rank the ranking bot.`)
@@ -216,9 +204,9 @@ module.exports = {
                 return;
             }
         
-            await noblox.setRank(groupInfo.id, user.id, rank);
-            let targetThumbnail = (await noblox.getPlayerThumbnail(user.id, 100, "png", false, "headshot"))[0];
-            let newRank = await noblox.getRankNameInGroup(groupInfo.id, user.id);
+            await setRank(groupInfo.id, user.id, rank);
+            let targetThumbnail = (await getPlayerThumbnail(user.id, "100x100", "Png", false))[0];
+            let newRank = await getRole(groupInfo.id, rank);
         
             let title = (rank > targetRank) ? `⬆️ User Promotion` : `⬇️ User Demotion`;
             let color = (rank > targetRank) ? Colors.Green : Colors.Red;
@@ -245,7 +233,7 @@ module.exports = {
                 },
                 {
                     name: `New Rank`,
-                    value: newRank,
+                    value: newRank.name,
                 },
             )
             .setColor(color)
@@ -257,7 +245,7 @@ module.exports = {
         
             let embed = new EmbedBuilder()
             .setTitle(`✅ Success`)
-            .setDescription(`Successfully ranked ${user.name} to the rank of *${newRank}*.`)
+            .setDescription(`Successfully ranked ${user.name} to the rank of *${newRank.name}*.`)
             .setColor(Colors.Green)
             .setTimestamp();
         

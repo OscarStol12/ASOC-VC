@@ -199,8 +199,7 @@ function playAudio(audio) {
         case 'youtube': {
             audioProcess = spawn('yt-dlp', [
                 '--cookies', `${PROJECT_ROOT}/cookies/yt-cookies.txt`,
-                '--user-agent', 'Mozilla/5.0 (X11; Linux x86_64; rv:148.0) Gecko/20100101 Firefox/148.0',
-                //'--proxy', process.env.HOME_PROXY,
+                '--proxy', process.env.HOME_PROXY,
                 '-f', '251/bestaudio/best',
                 '--force-ipv4',
                 '--audio-quality', '0',

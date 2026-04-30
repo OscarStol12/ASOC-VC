@@ -26,7 +26,9 @@ module.exports = async (interaction) => {
         .setColor(Colors.NotQuiteBlack)
         .setTimestamp();
     
-        await interaction.reply({embeds: [embed], flags: MessageFlags.Ephemeral});
+        if (interaction.deferred) await interaction.editReply({embeds: [embed], flags: MessageFlags.Ephemeral});
+        else await interaction.reply({embeds: [embed], flags: MessageFlags.Ephemeral});
+        
         return false;
     }
         

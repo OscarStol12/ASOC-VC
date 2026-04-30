@@ -1,8 +1,11 @@
 "use strict";
 
-const { EmbedBuilder, Colors, MessageFlags } = require('discord.js');
+const { EmbedBuilder, Colors, MessageFlags, ChatInputCommandInteraction } = require('discord.js');
 const config = require(`${PROJECT_ROOT}/config.json`);
 
+/**
+* @param {ChatInputCommandInteraction} interaction
+*/
 module.exports = async (interaction) => {
     let userRoles = interaction.member.roles;
     let canUseCmd = (
@@ -18,7 +21,9 @@ module.exports = async (interaction) => {
         .setColor(Colors.NotQuiteBlack)
         .setTimestamp();
 
-        await interaction.reply({embeds: [embed], flags: MessageFlags.Ephemeral});
+        if (interaction.deferred) await interaction.editReply({embeds: [embed], flags: MessageFlags.Ephemeral});
+        else await interaction.reply({embeds: [embed], flags: MessageFlags.Ephemeral});
+        
         return false;
     }
 
